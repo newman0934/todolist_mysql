@@ -3,6 +3,11 @@ const app = express()
 const port = 3000
 const db = require('./models')
 
+if (process.env.NODE_ENV !== 'production') {      
+  require('dotenv').config()                      
+}
+
+
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
@@ -17,14 +22,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.use(session({
-  secret: 'your secret key',              // secret: 定義一組自己的私鑰（字串)
+  secret: 'your secret key',            
   resave: 'false',
   saveUninitialized: 'false',
 }))
 
-// 使用 Passport - 要在「使用路由器」前面
 app.use(passport.initialize())
 app.use(passport.session())
+
+
 
 require('./config/passport')(passport)
 
@@ -37,7 +43,7 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/home'))
 app.use('/users', require('./routes/user'))  
 app.use('/todos', require('./routes/todo'))    
-
+app.use('/auth', require('./routes/auths'))
 // 設定 express port 3000 與資料庫同步
 app.listen(port, () => {
   console.log(`App is running on port ${port}!`)
