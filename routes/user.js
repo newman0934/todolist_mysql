@@ -11,14 +11,14 @@ router.get("/login", (req, res) => {
   let errors = [];
   let errorMessages = req.flash("error")[0];
   if (!errorMessages) {
-      res.render("login");
+    res.render("login");
   } else {
-      errors.push({
-          message: errorMessages
-      });
-      res.render("login", {
-          errors
-      });
+    errors.push({
+      message: errorMessages
+    });
+    res.render("login", {
+      errors
+    });
   }
 });
 
@@ -38,16 +38,25 @@ router.get("/register", (req, res) => {
 
 // 註冊檢查
 router.post('/register', (req, res) => {
-  const { name, email, password, password2 } = req.body
-  
+  const {
+    name,
+    email,
+    password,
+    password2
+  } = req.body
+
   let errors = []
 
   if (!name || !email || !password || !password2) {
-    errors.push({ message: '所有欄位都是必填' })
+    errors.push({
+      message: '所有欄位都是必填'
+    })
   }
 
   if (password !== password2) {
-    errors.push({ message: '密碼輸入錯誤' })
+    errors.push({
+      message: '密碼輸入錯誤'
+    })
   }
 
   if (errors.length > 0) {
@@ -59,7 +68,11 @@ router.post('/register', (req, res) => {
       password2
     })
   } else {
-    User.findOne({ where: {email: email }}).then(user => {
+    User.findOne({
+      where: {
+        email: email
+      }
+    }).then(user => {
       if (user) {
         req.flash("warning_msg", "這個email已經被註冊")
         res.render('register', {

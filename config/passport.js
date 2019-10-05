@@ -19,7 +19,7 @@ module.exports = passport => {
         .then(user => {
           if (!user) {
             return done(null, false, {
-              message: 'That email is not registered'
+              message: "That email is not registered"
             })
           }
           bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -45,7 +45,9 @@ module.exports = passport => {
       },
       (accessToken, refreshToekn, profile, done) => {
         User.findOne({
-          where: {email: profile._json.email}
+          where: {
+            email: profile._json.email
+          }
         }).then(user => {
           if (!user) {
             let randomPassword = Math.random()
@@ -59,7 +61,7 @@ module.exports = passport => {
                   password: hash
                 }).then(user => {
                   return done(null, user)
-                }).catch((err)=>{
+                }).catch((err) => {
                   console.log(err)
                 })
               });
