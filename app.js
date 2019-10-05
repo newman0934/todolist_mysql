@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+app.use(express.static('public'))
 
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
